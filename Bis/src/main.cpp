@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include "raylib.h"
 
+void StartMenu();
+void SecondMenu();
 void Game();
 void Settings();
 
@@ -8,22 +10,39 @@ bool exitWindow = false;
 int selectedOption = 0;
 bool inGame = false;
 
+
 void StartMenu() {
 
     ClearBackground(RAYWHITE);
 
-    DrawText("Main Menu", 100, 100, 40, GRAY);
-    DrawText(selectedOption == 0 ? "> Play" : "Play", 100, 200, 20, DARKGRAY);
+    DrawText("School Test Program", 100, 100, 40, GRAY);
+    DrawText(selectedOption == 0 ? "> Start" : "Start", 100, 200, 20, DARKGRAY);
     DrawText(selectedOption == 1 ? "> Settings" : "Settings", 100, 240, 20, DARKGRAY);
     DrawText(selectedOption == 2 ? "> Exit" : "Exit", 100, 280, 20, DARKGRAY);
 
-    if (IsKeyPressed(KEY_UP) && selectedOption > 0)
+    if (IsKeyPressed(KEY_UP) && selectedOption >= 0)
         selectedOption--;
 
-    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2)
+    if (IsKeyPressed(KEY_DOWN) && selectedOption <= 2)
         selectedOption++;
 }
+void SecondMenu() {
+    ClearBackground(RAYWHITE);
+    selectedOption = 0;
+    DrawText("School Subjects", 100, 100, 40, GRAY);
+    
+    DrawText(selectedOption == 0 ? "> Geography" : "Geography", 100, 200, 20, DARKGRAY);
+    DrawText(selectedOption == 1 ? "> Maths" : "Maths", 100, 240, 20, DARKGRAY);
+    DrawText(selectedOption == 2 ? "> History" : "History", 100, 280, 20, DARKGRAY);
 
+    if (IsKeyPressed(KEY_UP) && selectedOption >= 0)
+        selectedOption--;
+
+    if (IsKeyPressed(KEY_DOWN) && selectedOption <= 2)
+        selectedOption++;
+
+    
+}
 void Game()
 {
     BeginDrawing();
@@ -69,9 +88,9 @@ void Settings()
 
 int main()
 {
-    InitWindow(800, 450, "School test program");
+    InitWindow(1920, 1080, "School test program");
+    SetWindowState(FLAG_FULLSCREEN_MODE);
 
-    SetTargetFPS(60);
 
     while (!exitWindow)
     {
@@ -81,9 +100,8 @@ int main()
             StartMenu();
         }
         else {
-            Game();
+            SecondMenu();
         }
-
         if (IsKeyPressed(KEY_ENTER))
         {
             switch (selectedOption)
@@ -99,10 +117,9 @@ int main()
                 break;
             }
         }
-
+        
         EndDrawing();
     }
-
     CloseWindow();
 
     return 0;
