@@ -4,7 +4,6 @@
 
 using namespace std;
 
-
 enum class GameState {
     StartMenu,
     Settings,
@@ -20,47 +19,44 @@ static int longText1 = 0;
 bool exitWindow = false;
 int selectedOption = 0;
 bool inGame = false;
+bool musicStarted = false;  // Track if music has started
 
-#define MAX_FONTS 4
 void Settings() {
-
     const int screenWidth = 800;
     const int screenHeight = 450;
 
     InitWindow(screenWidth, screenHeight, "Settings");
 
-    SetTargetFPS(60);               
-    
+    SetTargetFPS(60);
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        
+    while (!WindowShouldClose()) {
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
         DrawText("Settings", 350, 20, 20, DARKGRAY);
         DrawLine(220, 50, 590, 50, DARKGRAY);
-        DrawText("Hi here you can take tests on different subjects", 120, 100, 20,  DARKGRAY);
+        DrawText("Hi here you can take tests on different subjects", 120, 100, 20, DARKGRAY);
         DrawText("to improve your knowledge and you will be graded accordingly", 100, 120, 20, DARKGRAY);
 
         EndDrawing();
-        
+
+        if (IsKeyDown(KEY_ESCAPE)) {
+            inGame = false;
+            currentState = GameState::StartMenu;
+            break;
+        }
     }
-    int static currentQuestion = 0;
+
     DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
 
-    if (IsKeyDown(KEY_ESCAPE))
-    {
-        currentQuestion = 0;
+    if (IsKeyDown(KEY_ESCAPE)) {
         inGame = false;
         currentState = GameState::StartMenu;
     }
 }
 
-void StartMenu()
-{
+void StartMenu() {
     ClearBackground(RAYWHITE);
 
     DrawText("School Test Program", 100, 100, 40, GRAY);
@@ -68,34 +64,28 @@ void StartMenu()
     DrawText(selectedOption == 1 ? "> Settings" : "Settings", 100, 240, 20, DARKGRAY);
     DrawText(selectedOption == 2 ? "> Exit" : "Exit", 100, 280, 20, DARKGRAY);
 
-    if (IsKeyPressed(KEY_UP) && selectedOption > 0)
-    {
+    if (IsKeyPressed(KEY_UP) && selectedOption > 0) {
         selectedOption--;
     }
 
-    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2)
-    {
+    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2) {
         selectedOption++;
     }
 
-    if (IsKeyPressed(KEY_ENTER))
-    {
-        if (selectedOption == 0)
-        {
+    if (IsKeyPressed(KEY_ENTER)) {
+        if (selectedOption == 0) {
             currentState = GameState::SubjectSelection;
         }
-        else if (selectedOption == 1){
-            Settings();
+        else if (selectedOption == 1) {
+            currentState = GameState::Settings;
         }
-        else if (selectedOption == 2)
-        {
+        else if (selectedOption == 2) {
             exitWindow = true;
         }
     }
 }
 
-void SubjectSelection()
-{
+void SubjectSelection() {
     ClearBackground(RAYWHITE);
 
     DrawText("Choose subject:", 100, 100, 40, GRAY);
@@ -103,37 +93,30 @@ void SubjectSelection()
     DrawText(selectedOption == 1 ? "> Maths" : "Maths", 100, 240, 20, DARKGRAY);
     DrawText(selectedOption == 2 ? "> History" : "History", 100, 280, 20, DARKGRAY);
 
-    if (IsKeyPressed(KEY_UP) && selectedOption > 0)
-    {
+    if (IsKeyPressed(KEY_UP) && selectedOption > 0) {
         selectedOption--;
     }
 
-    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2)
-    {
+    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2) {
         selectedOption++;
     }
 
-    if (IsKeyPressed(KEY_ENTER))
-    {
-        if (selectedOption == 0)
-        {
+    if (IsKeyPressed(KEY_ENTER)) {
+        if (selectedOption == 0) {
             currentState = GameState::GeographyQuiz;
             inGame = true;
         }
-        else if (selectedOption == 1)
-        {
+        else if (selectedOption == 1) {
             currentState = GameState::MathsQuiz;
             inGame = true;
         }
-        else if (selectedOption == 2)
-        {
+        else if (selectedOption == 2) {
             currentState = GameState::HistoryDisplay;
             inGame = true;
         }
     }
 
-    if (IsKeyDown(KEY_ESCAPE))
-    {
+    if (IsKeyDown(KEY_ESCAPE)) {
         inGame = false;
         currentState = GameState::StartMenu;
     }
@@ -366,22 +349,27 @@ void HistoryQuiz()
     }
 }
 
-
-int main()
-{
+int main() {
     InitWindow(800, 450, "School Test Program");
 
-    InitAudioDevice();      // Initialize audio device
+    InitAudioDevice();
 
-    Sound music = LoadSound("music.ogg");        // Load OGG audio file
+    Sound music = LoadSound("music.ogg");  
+    Image image = LoadImage("bg.png");
+    Texture2D texture = LoadTextureFromImage(image); 
+    UnloadImage(image);
 
-   
-    while (!exitWindow)
-    {
-        if (IsKeyPressed(KEY_ENTER)) PlaySound(music);      // Play OGG sound
+    while (!exitWindow) {
+        if (!musicStarted && IsKeyPressed(KEY_ENTER)) {
+            PlaySound(music);  
+            musicStarted = true;
+        }
+
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
+
+        DrawTexture(texture, 800 / 2 - texture.width / 2, 450 / 2 - texture.height / 2, WHITE);
 
         switch (currentState)
         {
@@ -407,7 +395,8 @@ int main()
 
         EndDrawing();
     }
- 
+    UnloadSound(music);     
+    CloseAudioDevice();     
     CloseWindow();
 
 }
