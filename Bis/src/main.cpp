@@ -4,8 +4,10 @@
 
 using namespace std;
 
+
 enum class GameState {
     StartMenu,
+    Settings,
     SubjectSelection,
     GeographyQuiz,
     MathsQuiz,
@@ -14,12 +16,47 @@ enum class GameState {
 
 GameState currentState = GameState::StartMenu;
 
+static int longText1 = 0;
 bool exitWindow = false;
 int selectedOption = 0;
 bool inGame = false;
 
+#define MAX_FONTS 4
 void Settings() {
-    cout << "Settings";
+
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    InitWindow(screenWidth, screenHeight, "Settings");
+
+    SetTargetFPS(60);               
+    
+
+    // Main game loop
+    while (!WindowShouldClose())    // Detect window close button or ESC key
+    {
+        
+        BeginDrawing();
+
+        ClearBackground(RAYWHITE);
+
+        DrawText("Settings", 350, 20, 20, DARKGRAY);
+        DrawLine(220, 50, 590, 50, DARKGRAY);
+        DrawText("Hi here you can take tests on different subjects", 120, 100, 20,  DARKGRAY);
+        DrawText("to improve your knowledge and you will be graded accordingly", 100, 120, 20, DARKGRAY);
+
+        EndDrawing();
+        
+    }
+    int static currentQuestion = 0;
+    DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
+
+    if (IsKeyDown(KEY_ESCAPE))
+    {
+        currentQuestion = 0;
+        inGame = false;
+        currentState = GameState::StartMenu;
+    }
 }
 
 void StartMenu()
@@ -339,6 +376,9 @@ int main()
         {
         case GameState::StartMenu:
             StartMenu();
+            break;
+        case GameState::Settings:
+            Settings();
             break;
         case GameState::SubjectSelection:
             SubjectSelection();
