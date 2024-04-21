@@ -122,31 +122,61 @@ void SubjectSelection() {
     }
 }
 
+const char* geoQuestions[30] = {
+    "1.What is the capital of France?",
+    "2.What is the largest desert in the world?",
+    "3.Where is the Great Barrier Reef located?",
+    "4.Which country is famous for the Amazon Rainforest?",
+    "5.What is the tallest mountain in the world?",
+    "6.What is the capital of Japan?",
+    "7.Where is the Amazon River located?",
+    "8.Which continent is the Sahara Desert in?",
+    "9.What is the longest river in the world?",
+    "10.In which country would you find the Seregeti National Park?",
+    "11.What is the smallest country in the world by land area?",
+    "12.Where is the dead sea located?",
+    "13.What is the largest island in the world?",
+    "14.Which country is known as the Land of the Rising Sun?",
+    "15.Where is the Great Wall of China located?",
+    "16.What is the highest waterfall in the world?",
+    "17.In which country would you find the Andes Mountains?",
+    "18.Which ocean is the largest by surface area?",
+    "19.What is the capital of Australia?",
+    "20.Where is the Grand Canyon located?"
 
-const char* geoQuestions[5] = {
-    "What is the capital of France?",
-    "What is the largest desert in the world?",
-    "Where is the Great Barrier Reef located?",
-    "Which country is famous for the Amazon Rainforest?",
-    "What is the tallest mountain in the world?"
 };
 
-const string geoAnswers[5] = {
+const string geoAnswers[30] = {
     "Paris",
     "Sahara",
     "Australia",
     "Brazil",
-    "Everest"
+    "Everest",
+    "Tokyo",
+    "South America",
+    "Africa",
+    "Nile River",
+    "Tanzania",
+    "Vatican City",
+    "In the Middle East",
+    "Greenland",
+    "Japan",
+    "China",
+    "Angel Falls",
+    "South America",
+    "Pacific Ocean",
+    "Canberra",
+    "United States"
 };
 
 void GeographyQuiz()
 {
     static int currentQuestion = 0;
-    static string userAnswers[] = { "", "", "", "", "" };
+    static string userAnswers[30];
 
     ClearBackground(RAYWHITE);
 
-    if (currentQuestion < 5)
+    if (currentQuestion < 20)
     {
         DrawText(geoQuestions[currentQuestion], 100, 100, 20, DARKGRAY);
         DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
@@ -172,12 +202,14 @@ void GeographyQuiz()
         ClearBackground(RAYWHITE);
         DrawText("Geography Results:", 100, 100, 20, DARKGRAY);
 
+        int points = 0;
         for (int i = 0; i < 5; i++)
         {
             string resultText = "Question " + to_string(i + 1) + ": ";
             if (userAnswers[i] == geoAnswers[i])
             {
                 resultText += "Correct";
+                points++;
             }
             else
             {
@@ -185,6 +217,7 @@ void GeographyQuiz()
             }
 
             DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
+            cout << "You have:" << points << "points";
         }
 
         DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
