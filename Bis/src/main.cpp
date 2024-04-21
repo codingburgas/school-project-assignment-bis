@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <string>
 #include "raylib.h"
 
 bool exitWindow = false;
@@ -7,73 +8,42 @@ bool inGame = false;
 
 void Geography()
 {
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    static const char* question = "What is the capital of France?";
-    static const char* correctAnswer = "Paris";
-    static std::string answer = "";
-    DrawText(question, 100, 100, 30, DARKGRAY);
-    DrawText("Your Answer: ", 100, 150, 20, DARKGRAY);
-    DrawRectangleLines(300, 150, 200, 30, DARKGRAY);
-    DrawText(answer.c_str(), 305, 155, 20, DARKGRAY);
-    if (!IsKeyDown(KEY_ENTER))
-    {
-        char keyPressed = GetKeyPressed();
-        if (keyPressed != 0)
-        {
-            answer += keyPressed;
-        }
-    }
-    if (IsKeyPressed(KEY_ENTER))
-    {
-        if (answer == correctAnswer)
-            DrawText("Correct!", 100, 200, 20, GREEN);
-        else
-            DrawText("Incorrect! The correct answer is Paris.", 100, 200, 20, RED);
-    }
+    // Placeholder function for Geography; add actual functionality here
+    std::cout << "Geography function called!" << std::endl;
+    exitWindow = true; // For demo purposes, exit the window after calling
 }
-
 
 void Maths()
 {
-    exitWindow = true;
+    // Placeholder function for Maths; add actual functionality here
+    std::cout << "Maths function called!" << std::endl;
+    exitWindow = true; // For demo purposes, exit the window after calling
 }
 
 void History()
 {
-    exitWindow = true;
+    // Placeholder function for History; add actual functionality here
+    std::cout << "History function called!" << std::endl;
+    exitWindow = true; // For demo purposes, exit the window after calling
 }
-
 
 void Settings()
 {
-    exitWindow = true;
-}
-void StartMenu() {
-
-    ClearBackground(RAYWHITE);
-
-    DrawText("School Test Program", 100, 100, 40, GRAY);
-    DrawText(selectedOption == 0 ? "> Start" : "Start", 100, 200, 20, DARKGRAY);
-    DrawText(selectedOption == 1 ? "> Settings" : "Settings", 100, 240, 20, DARKGRAY);
-    DrawText(selectedOption == 2 ? "> Exit" : "Exit", 100, 280, 20, DARKGRAY);
-
-    if (IsKeyPressed(KEY_UP) && selectedOption >= 0)
-        selectedOption--;
-
-    if (IsKeyPressed(KEY_DOWN) && selectedOption <= 2)
-        selectedOption++;
+    // Placeholder function for Settings; add actual functionality here
+    std::cout << "Settings function called!" << std::endl;
+    exitWindow = true; // For demo purposes, exit the window after calling
 }
 
-void SecondMenu() {
-
+void SecondMenu()
+{
     ClearBackground(RAYWHITE);
 
     DrawText("School Subjects", 100, 100, 40, GRAY);
 
     const char* subjects[] = { "Geography", "Maths", "History" };
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++)
+    {
         DrawText(selectedOption == i ? (std::string("> ") + subjects[i]).c_str() : subjects[i], 100, 200 + i * 40, 20, DARKGRAY);
     }
 
@@ -93,11 +63,33 @@ void SecondMenu() {
         }
     }
 
-    if (IsKeyPressed(KEY_UP) && selectedOption > 0) {
+    if (IsKeyPressed(KEY_UP) && selectedOption > 0)
+    {
         selectedOption--;
     }
 
-    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2) {
+    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2)
+    {
+        selectedOption++;
+    }
+}
+
+void StartMenu()
+{
+    ClearBackground(RAYWHITE);
+
+    DrawText("School Test Program", 100, 100, 40, GRAY);
+    DrawText(selectedOption == 0 ? "> Start" : "Start", 100, 200, 20, DARKGRAY);
+    DrawText(selectedOption == 1 ? "> Settings" : "Settings", 100, 240, 20, DARKGRAY);
+    DrawText(selectedOption == 2 ? "> Exit" : "Exit", 100, 280, 20, DARKGRAY);
+
+    if (IsKeyPressed(KEY_UP) && selectedOption > 0)
+    {
+        selectedOption--;
+    }
+
+    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2)
+    {
         selectedOption++;
     }
 }
@@ -109,33 +101,55 @@ int main()
     while (!exitWindow)
     {
         BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-        if (!inGame) {
+        if (!inGame)
+        {
             StartMenu();
         }
-        else {
+        else
+        {
             SecondMenu();
         }
+
         if (IsKeyPressed(KEY_ENTER))
         {
-            if (selectedOption == 0)
+            if (!inGame)  // Only trigger on menu selection if not in game
             {
-                inGame = true;
+                if (selectedOption == 0) // Start game
+                {
+                    inGame = true;
+                }
+                else if (selectedOption == 1) // Settings
+                {
+                    Settings();
+                }
+                else if (selectedOption == 2) // Exit
+                {
+                    exitWindow = true;
+                }
             }
-            else if (selectedOption == 1)
+            else // Inside the game menu
             {
-               Settings();
-            }
-            else if (selectedOption == 2)
-            {
-                exitWindow = true;
+                if (selectedOption == 0)
+                {
+                    Maths(); // Start Maths function
+                }
+                else if (selectedOption == 1)
+                {
+                    // Handle other game-related options
+                }
             }
         }
 
-        if (IsKeyDown(KEY_ESCAPE)) {
+        if (IsKeyDown(KEY_ESCAPE))
+        {
             exitWindow = true;
         }
 
         EndDrawing();
     }
+
+    CloseWindow(); // Close the window before exiting
+    return 0;
 }
