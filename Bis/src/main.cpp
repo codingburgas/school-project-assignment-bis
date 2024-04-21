@@ -131,9 +131,13 @@ void SubjectSelection()
             inGame = true;
         }
     }
+
+    if (IsKeyDown(KEY_ESCAPE))
+    {
+        inGame = false;
+        currentState = GameState::StartMenu;
+    }
 }
-
-
 
 
 const char* geoQuestions[5] = {
@@ -367,8 +371,15 @@ int main()
 {
     InitWindow(800, 450, "School Test Program");
 
+    InitAudioDevice();      // Initialize audio device
+
+    Sound music = LoadSound("music.ogg");        // Load OGG audio file
+
+   
     while (!exitWindow)
     {
+        if (IsKeyPressed(KEY_ENTER)) PlaySound(music);      // Play OGG sound
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
@@ -396,8 +407,7 @@ int main()
 
         EndDrawing();
     }
-
+ 
     CloseWindow();
 
-    return 0;
 }
