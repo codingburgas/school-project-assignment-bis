@@ -6,32 +6,209 @@ bool exitWindow = false;
 int selectedOption = 0;
 bool inGame = false;
 
-void Geography()
-{
-    // Placeholder function for Geography; add actual functionality here
-    std::cout << "Geography function called!" << std::endl;
-    exitWindow = true; // For demo purposes, exit the window after calling
-}
+const int NUM_QUESTIONS = 6;
+
+const char* questions[NUM_QUESTIONS] = {
+    "What is 2 + 2?",
+    "What is 5 * 3?",
+    "What is 10 / 2?",
+    "What is 8 - 4?",
+    "What is 3 + 7?",
+    "What is 12 / 3?"
+};
+
+const std::string answers[NUM_QUESTIONS] = {
+    "4",
+    "15",
+    "5",
+    "4",
+    "10",
+    "4"
+};
 
 void Maths()
 {
-    // Placeholder function for Maths; add actual functionality here
-    std::cout << "Maths function called!" << std::endl;
-    exitWindow = true; // For demo purposes, exit the window after calling
+    static int currentQuestion = 0;
+    static std::string userAnswers[NUM_QUESTIONS];
+
+    ClearBackground(RAYWHITE);
+
+    if (currentQuestion < NUM_QUESTIONS)
+    {
+        DrawText(questions[currentQuestion], 100, 100, 20, DARKGRAY);
+        DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+        DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
+
+        char key = GetCharPressed();
+        if (key >= 32 && key <= 126)
+        {
+            userAnswers[currentQuestion] += key;
+        }
+        else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
+        {
+            userAnswers[currentQuestion].pop_back();
+        }
+
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            currentQuestion++;
+        }
+    }
+    else
+    {
+        ClearBackground(RAYWHITE);
+        DrawText("Results:", 100, 100, 20, DARKGRAY);
+
+        for (int i = 0; i < NUM_QUESTIONS; i++)
+        {
+            std::string resultText = "Question " + std::to_string(i + 1) + ": ";
+            if (userAnswers[i] == answers[i])
+            {
+                resultText += "Correct";
+            }
+            else
+            {
+                resultText += "Incorrect";
+            }
+
+            DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
+        }
+
+        DrawText("Press ESC to return", 100, 320, 20, DARKGRAY);
+
+        if (IsKeyDown(KEY_ESCAPE))
+        {
+            currentQuestion = 0;
+            for (int i = 0; i < NUM_QUESTIONS; i++)
+            {
+                userAnswers[i].clear();
+            }
+            inGame = false;
+        }
+    }
+}
+
+const int NUM_GEO_QUESTIONS = 5;
+
+const char* geoQuestions[NUM_GEO_QUESTIONS] = {
+    "What is the capital of France?",
+    "What is the largest desert in the world?",
+    "Where is the Great Barrier Reef located?",
+    "Which country is famous for the Amazon Rainforest?",
+    "What is the tallest mountain in the world?"
+};
+
+const std::string geoAnswers[NUM_GEO_QUESTIONS] = {
+    "Paris",
+    "Sahara",
+    "Australia",
+    "Brazil",
+    "Everest"
+};
+
+void Geography()
+{
+    static int currentQuestion = 0;
+    static std::string userAnswers[NUM_GEO_QUESTIONS];
+
+    ClearBackground(RAYWHITE);
+
+    if (currentQuestion < NUM_GEO_QUESTIONS)
+    {
+        DrawText(geoQuestions[currentQuestion], 100, 100, 20, DARKGRAY);
+        DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+        DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
+
+        char key = GetCharPressed();
+        if (key >= 32 && key <= 126)
+        {
+            userAnswers[currentQuestion] += key;
+        }
+        else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
+        {
+            userAnswers[currentQuestion].pop_back();
+        }
+
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            currentQuestion++;
+        }
+    }
+    else
+    {
+        ClearBackground(RAYWHITE);
+        DrawText("Geography Results:", 100, 100, 20, DARKGRAY);
+
+        for (int i = 0; i < NUM_GEO_QUESTIONS; i++)
+        {
+            std::string resultText = "Question " + std::to_string(i + 1) + ": ";
+            if (userAnswers[i] == geoAnswers[i])
+            {
+                resultText += "Correct";
+            }
+            else
+            {
+                resultText += "Incorrect";
+            }
+
+            DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
+        }
+
+        DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
+
+        if (IsKeyDown(KEY_ESCAPE))
+        {
+            currentQuestion = 0;
+            for (int i = 0; i < NUM_GEO_QUESTIONS; i++)
+            {
+                userAnswers[i].clear();
+            }
+            inGame = false;
+        }
+    }
 }
 
 void History()
 {
-    // Placeholder function for History; add actual functionality here
     std::cout << "History function called!" << std::endl;
-    exitWindow = true; // For demo purposes, exit the window after calling
 }
 
 void Settings()
 {
-    // Placeholder function for Settings; add actual functionality here
     std::cout << "Settings function called!" << std::endl;
-    exitWindow = true; // For demo purposes, exit the window after calling
+}
+
+
+void StartMenu()
+{
+    ClearBackground(RAYWHITE);
+
+    DrawText("School Test Program", 100, 100, 40, GRAY);
+    DrawText(selectedOption == 0 ? "> Start" : "Start", 100, 200, 20, DARKGRAY);
+    DrawText(selectedOption == 1 ? "> Settings" : "Settings", 100, 240, 20, DARKGRAY);
+    DrawText(selectedOption == 2 ? "> Exit" : "Exit", 100, 280, 20, DARKGRAY);
+
+    if (IsKeyPressed(KEY_UP) && selectedOption > 0)
+    {
+        selectedOption--;
+    }
+
+    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2)
+    {
+        selectedOption++;
+    }
+
+    if (IsKeyDown(KEY_ESCAPE))
+    {
+        if (inGame)
+        {
+            inGame = false;
+        }
+        else
+        {
+            exitWindow = true;
+        }
+    }
 }
 
 void SecondMenu()
@@ -51,37 +228,17 @@ void SecondMenu()
     {
         if (selectedOption == 0)
         {
-            Geography();
+            inGame = true;
         }
         else if (selectedOption == 1)
         {
-            Maths();
+            inGame = true;
         }
         else if (selectedOption == 2)
         {
             History();
         }
     }
-
-    if (IsKeyPressed(KEY_UP) && selectedOption > 0)
-    {
-        selectedOption--;
-    }
-
-    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2)
-    {
-        selectedOption++;
-    }
-}
-
-void StartMenu()
-{
-    ClearBackground(RAYWHITE);
-
-    DrawText("School Test Program", 100, 100, 40, GRAY);
-    DrawText(selectedOption == 0 ? "> Start" : "Start", 100, 200, 20, DARKGRAY);
-    DrawText(selectedOption == 1 ? "> Settings" : "Settings", 100, 240, 20, DARKGRAY);
-    DrawText(selectedOption == 2 ? "> Exit" : "Exit", 100, 280, 20, DARKGRAY);
 
     if (IsKeyPressed(KEY_UP) && selectedOption > 0)
     {
@@ -105,51 +262,35 @@ int main()
 
         if (!inGame)
         {
-            StartMenu();
+            SecondMenu();
         }
         else
         {
-            SecondMenu();
-        }
-
-        if (IsKeyPressed(KEY_ENTER))
-        {
-            if (!inGame)  // Only trigger on menu selection if not in game
+            if (selectedOption == 0)
             {
-                if (selectedOption == 0) // Start game
-                {
-                    inGame = true;
-                }
-                else if (selectedOption == 1) // Settings
-                {
-                    Settings();
-                }
-                else if (selectedOption == 2) // Exit
-                {
-                    exitWindow = true;
-                }
+                Geography();
             }
-            else // Inside the game menu
+            else if (selectedOption == 1)
             {
-                if (selectedOption == 0)
-                {
-                    Maths(); // Start Maths function
-                }
-                else if (selectedOption == 1)
-                {
-                    // Handle other game-related options
-                }
+                Maths();
             }
         }
 
         if (IsKeyDown(KEY_ESCAPE))
         {
-            exitWindow = true;
+            if (inGame)
+            {
+                inGame = false;
+            }
+            else
+            {
+                exitWindow = true;
+            }
         }
 
         EndDrawing();
     }
 
-    CloseWindow(); // Close the window before exiting
+    CloseWindow();
     return 0;
 }
