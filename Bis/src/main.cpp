@@ -235,33 +235,42 @@ void GeographyTestEasy()
             // Proceed to the next question
             currentQuestion++;
         }
+
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            currentQuestion++;
+        }
     }
     else
     {
         // Draw the results
-        DrawText("Geography Results:", 100, 100, 20, DARKGRAY);
+        DrawText("Geography Results:", 100, 100, 20, DARKBLUE);
+        DrawText("Press ESC to return", 10, 40, 20, GRAY);
 
         int points = 0;
         for (int i = 0; i < 10; i++)
         {
             // Draw each question's result
-            string resultText = "Question " + to_string(i + 1) + ": ";
+            string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+            string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
             if (userAnswers[i] == geoAnswers[i])
             {
-                resultText += "Correct";
+                resultTextCorrect += "Correct";
                 points++;
+                DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
             }
             else
             {
-                resultText += "Incorrect";
+                resultTextIncorrect += "Incorrect";
+                DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
             }
-            DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
         }
 
         // Draw the total points
-        DrawText("You have: ", 10, 10, 20, BLACK);
-        DrawText(to_string(points).c_str(), 140, 10, 20, BLACK);
-        DrawText(" points", 180, 10, 20, BLACK);
+        DrawText("You have: ", 10, 10, 20, GRAY);
+        DrawText(to_string(points).c_str(), 140, 10, 20, GRAY);
+        DrawText(" points", 180, 10, 20, GRAY);
 
 
         // Check if the ESC key is pressed to return to the main menu
