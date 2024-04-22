@@ -11,10 +11,12 @@ enum class GameState {
     StartMenu,
     Settings,
     SubjectSelection,
+
     GeographyQuiz,
     GeographyTestEasy,
     GeographyTestMedium,
     GeographyTestHard,
+
     MathsQuiz,
     HistoryDisplay
 };
@@ -161,9 +163,10 @@ void GeographyQuiz()
 
     if (IsKeyDown(KEY_ESCAPE)) {
         inGame = false;
-        currentState = GameState::StartMenu;
+        currentState = GameState::SubjectSelection;
     }
 }
+
 
 
 const char* geoQuestions[30] = {
@@ -176,18 +179,8 @@ const char* geoQuestions[30] = {
     "7.Where is the Amazon River located?",
     "8.Which continent is the Sahara Desert in?",
     "9.What is the longest river in the world?",
-    "10.In which country would you find the Seregeti National Park?",
-    "11.What is the smallest country in the world by land area?",
-    "12.Where is the dead sea located?",
-    "13.What is the largest island in the world?",
-    "14.Which country is known as the Land of the Rising Sun?",
-    "15.Where is the Great Wall of China located?",
-    "16.What is the highest waterfall in the world?",
-    "17.In which country would you find the Andes Mountains?",
-    "18.Which ocean is the largest by surface area?",
-    "19.What is the capital of Australia?",
-    "20.Where is the Grand Canyon located?"
-
+    "10.In which country would you find the Serengeti National Park?",
+    
 };
 
 const string geoAnswers[30] = {
@@ -201,16 +194,7 @@ const string geoAnswers[30] = {
     "Africa",
     "Nile River",
     "Tanzania",
-    "Vatican City",
-    "In the Middle East",
-    "Greenland",
-    "Japan",
-    "China",
-    "Angel Falls",
-    "South America",
-    "Pacific Ocean",
-    "Canberra",
-    "United States"
+    
 };
 
 void GeographyTestEasy()
@@ -220,35 +204,47 @@ void GeographyTestEasy()
 
     ClearBackground(RAYWHITE);
 
-    if (currentQuestion < 20)
+    if (currentQuestion < 10)
     {
+        // Draw the question
         DrawText(geoQuestions[currentQuestion], 100, 100, 20, DARKGRAY);
+        // Draw an input box for the user's answer
         DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+        // Draw the user's answer inside the input box
         DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
 
         char key = GetCharPressed();
         if (key >= 32 && key <= 126)
         {
+            // Append the pressed key to the user's answer
             userAnswers[currentQuestion] += key;
         }
         else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
         {
+            // Remove the last character from the user's answer when backspace is pressed
             userAnswers[currentQuestion].pop_back();
         }
 
-        if (IsKeyPressed(KEY_ENTER))
+        // Draw the "Next" button
+        DrawRectangle(100, 200, 100, 40, SKYBLUE);
+        DrawText("Next", 120, 210, 20, DARKBLUE);
+
+        // Check if the "Next" button is clicked
+        if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
+            // Proceed to the next question
             currentQuestion++;
         }
     }
     else
     {
-        ClearBackground(RAYWHITE);
+        // Draw the results
         DrawText("Geography Results:", 100, 100, 20, DARKGRAY);
 
         int points = 0;
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
         {
+            // Draw each question's result
             string resultText = "Question " + to_string(i + 1) + ": ";
             if (userAnswers[i] == geoAnswers[i])
             {
@@ -260,25 +256,32 @@ void GeographyTestEasy()
                 resultText += "Incorrect";
             }
             DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
-            std::stringstream ss;
-            ss << points;
-            std::string pointsStr = ss.str();
-
-            // Draw text on the screen without using FormatText
-            DrawText("You have: ", 10, 10, 20, BLACK);
-            DrawText(pointsStr.c_str(), 140, 10, 20, BLACK); // Draw the string converted from integer
-            DrawText(" points", 180, 10, 20, BLACK);
         }
 
-        DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
+        // Draw the total points
+        DrawText("You have: ", 10, 10, 20, BLACK);
+        DrawText(to_string(points).c_str(), 140, 10, 20, BLACK);
+        DrawText(" points", 180, 10, 20, BLACK);
 
+
+        // Check if the ESC key is pressed to return to the main menu
         if (IsKeyDown(KEY_ESCAPE))
         {
             currentQuestion = 0;
-            inGame = false;
-            currentState = GameState::SubjectSelection;
+            inGame = false;  // Assuming inGame is a global variable
+            currentState = GameState::SubjectSelection;  // Assuming currentState is an enum representing the game state
         }
     }
+}
+
+void GeographyTestMedium()
+{
+
+}
+
+void GeographyTestHard()
+{
+
 }
     const char* mathQuestions[5] = {
     "What is 15 multiplied by 6?",
@@ -295,6 +298,8 @@ const string mathAnswers[5] = {
     "3.14",
     "132"
 };
+
+
 
 void MathsQuiz()
 {
@@ -467,6 +472,15 @@ int main() {
             break;
         case GameState::GeographyQuiz:
             GeographyQuiz();
+            break;
+        case GameState::GeographyTestEasy:
+            GeographyTestEasy();
+            break;
+        case GameState::GeographyTestMedium:
+            GeographyTestMedium();
+            break;
+        case GameState::GeographyTestHard:
+            GeographyTestHard();
             break;
         case GameState::MathsQuiz:
             MathsQuiz();
