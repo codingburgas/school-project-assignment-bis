@@ -34,40 +34,11 @@ bool inGame = false;
 bool musicStarted = false;
 
 void Settings() {
-	const int screenWidth = 800;
-	const int screenHeight = 450;
 
-	InitWindow(screenWidth, screenHeight, "Settings");
+	std::string op = std::string("start ").append("https://github.com/codingburgas/school-project-assignment-bis");
+	system(op.c_str());
+	currentState = GameState::StartMenu;
 
-	SetTargetFPS(60);
-
-	while (!WindowShouldClose()) {
-		BeginDrawing();
-
-		ClearBackground(RAYWHITE);
-
-		DrawText("Settings", 350, 20, 20, DARKGRAY);
-		DrawLine(220, 50, 590, 50, DARKGRAY);
-		DrawText("Hi here you can take tests on different subjects", 120, 100, 20, DARKGRAY);
-		DrawText("to improve your knowledge and you will be graded accordingly.", 100, 130, 20, DARKGRAY);
-		DrawText("If you can do our hard test with more than 8 points you will success", 70, 160, 20, DARKGRAY);
-		DrawText("GOOD LUCK!!!", 335, 190, 20, RED);
-
-		EndDrawing();
-
-		if (IsKeyDown(KEY_ESCAPE)) {
-			inGame = false;
-			currentState = GameState::StartMenu;
-			break;
-		}
-	}
-
-	DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
-
-	if (IsKeyDown(KEY_ESCAPE)) {
-		inGame = false;
-		currentState = GameState::StartMenu;
-	}
 }
 
 void StartMenu() {
@@ -75,7 +46,7 @@ void StartMenu() {
 
 	DrawText("School Test Program", 100, 100, 40, BLACK);
 	DrawText(selectedOption == 0 ? "> Start" : "Start", 100, 200, 20, DARKGRAY);
-	DrawText(selectedOption == 1 ? "> Settings" : "Settings", 100, 240, 20, DARKGRAY);
+	DrawText(selectedOption == 1 ? "> Our repository" : "Our repository", 100, 240, 20, DARKGRAY);
 	DrawText(selectedOption == 2 ? "> Exit" : "Exit", 100, 280, 20, DARKGRAY);
 
 	if (IsKeyPressed(KEY_UP) && selectedOption > 0) {
