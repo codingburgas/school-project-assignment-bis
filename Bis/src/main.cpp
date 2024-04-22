@@ -1,5 +1,8 @@
 ﻿#include <iostream>
 #include <string>
+#include <sstream>
+#include <vector>
+#include <algorithm>
 #include "raylib.h"
 
 using namespace std;
@@ -9,6 +12,9 @@ enum class GameState {
     Settings,
     SubjectSelection,
     GeographyQuiz,
+    GeographyTestEasy,
+    GeographyTestMedium,
+    GeographyTestHard,
     MathsQuiz,
     HistoryDisplay
 };
@@ -121,6 +127,44 @@ void SubjectSelection() {
         currentState = GameState::StartMenu;
     }
 }
+void GeographyQuiz()
+{
+    ClearBackground(RAYWHITE);
+
+    DrawText("Choose level:", 100, 100, 40, GRAY);
+    DrawText(selectedOption == 0 ? "> Easy" : "Easy", 100, 200, 20, DARKGRAY);
+    DrawText(selectedOption == 1 ? "> Medium" : "Medium", 100, 240, 20, DARKGRAY);
+    DrawText(selectedOption == 2 ? "> Hard" : "Hard", 100, 280, 20, DARKGRAY);
+
+    if (IsKeyPressed(KEY_UP) && selectedOption > 0) {
+        selectedOption--;
+    }
+
+    if (IsKeyPressed(KEY_DOWN) && selectedOption < 2) {
+        selectedOption++;
+    }
+
+    if (IsKeyPressed(KEY_ENTER)) {
+        if (selectedOption == 0) {
+            currentState = GameState::GeographyTestEasy;
+            inGame = true;
+        }
+        else if (selectedOption == 1) {
+            currentState = GameState::GeographyTestMedium;
+            inGame = true;
+        }
+        else if (selectedOption == 2) {
+            currentState = GameState::GeographyTestHard;
+            inGame = true;
+        }
+    }
+
+    if (IsKeyDown(KEY_ESCAPE)) {
+        inGame = false;
+        currentState = GameState::StartMenu;
+    }
+}
+
 
 const char* geoQuestions[30] = {
     "1.What is the capital of France?",
@@ -169,7 +213,7 @@ const string geoAnswers[30] = {
     "United States"
 };
 
-void GeographyQuiz()
+void GeographyTestEasy()
 {
     static int currentQuestion = 0;
     static string userAnswers[30];
@@ -203,7 +247,7 @@ void GeographyQuiz()
         DrawText("Geography Results:", 100, 100, 20, DARKGRAY);
 
         int points = 0;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 20; i++)
         {
             string resultText = "Question " + to_string(i + 1) + ": ";
             if (userAnswers[i] == geoAnswers[i])
@@ -215,9 +259,15 @@ void GeographyQuiz()
             {
                 resultText += "Incorrect";
             }
-
             DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
-            cout << "You have:" << points << "points";
+            std::stringstream ss;
+            ss << points;
+            std::string pointsStr = ss.str();
+
+            // Draw text on the screen without using FormatText
+            DrawText("You have: ", 10, 10, 20, BLACK);
+            DrawText(pointsStr.c_str(), 140, 10, 20, BLACK); // Draw the string converted from integer
+            DrawText(" points", 180, 10, 20, BLACK);
         }
 
         DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
@@ -230,8 +280,7 @@ void GeographyQuiz()
         }
     }
 }
-
-const char* mathQuestions[5] = {
+    const char* mathQuestions[5] = {
     "What is 15 multiplied by 6?",
     "What is the square root of 144?",
     "How many degrees are there in a right angle?",
@@ -294,6 +343,7 @@ void MathsQuiz()
 
             DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
         }
+        
 
         DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
 
