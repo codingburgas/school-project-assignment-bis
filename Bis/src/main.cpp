@@ -45,7 +45,9 @@ void Settings() {
         DrawText("Settings", 350, 20, 20, DARKGRAY);
         DrawLine(220, 50, 590, 50, DARKGRAY);
         DrawText("Hi here you can take tests on different subjects", 120, 100, 20, DARKGRAY);
-        DrawText("to improve your knowledge and you will be graded accordingly", 100, 120, 20, DARKGRAY);
+        DrawText("to improve your knowledge and you will be graded accordingly.", 100, 130, 20, DARKGRAY);
+        DrawText("If you can do our hard test with more than 8 points you will success", 70, 160, 20, DARKGRAY);
+        DrawText("GOOD LUCK!!!", 335, 190, 20, RED);
 
         EndDrawing();
 
@@ -282,15 +284,231 @@ void GeographyTestEasy()
         }
     }
 }
+const char* geo2Questions[10] = {
+    "1.What is the southernmost continent?",
+    "2.Which European country is known for its windmills, tulips, and canals?",
+    "3.What is the name of the strait that separates Europe from Africa?",
+    "4.Which two countries share the longest international border?",
+    "5.What is the highest waterfall in the world, and in which country is it located?",
+    "6.Which African country is famous for its Maasai Mara National Reserve?",
+    "7.What is the name of the world's largest coral reef system?",
+    "8.What is the capital of Canada?",
+    "9.Which two countries are separated by the Strait of Gibraltar?",
+    "10.What is the largest island in the Mediterranean Sea?",
 
+};
+
+const string geo2Answers[10] = {
+    "Antarctica",
+    "Netherlands",
+    "Strait if Gibraltar",
+    "Canada and the United States",
+    "Angel Falls",
+    "Kenya",
+    "Great Barrier Reef",
+    "Ottawa",
+    "Spain and Morocco",
+    "Silicy",
+
+};
 void GeographyTestMedium()
 {
+    static int currentQuestion = 0;
+    static string userAnswers[30];
 
+    ClearBackground(RAYWHITE);
+
+    if (currentQuestion < 10)
+    {
+        // Draw the question
+        DrawText(geo2Questions[currentQuestion], 100, 100, 20, DARKGRAY);
+        // Draw an input box for the user's answer
+        DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+        // Draw the user's answer inside the input box
+        DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
+
+        char key = GetCharPressed();
+        if (key >= 32 && key <= 126)
+        {
+            // Append the pressed key to the user's answer
+            userAnswers[currentQuestion] += key;
+        }
+        else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
+        {
+            // Remove the last character from the user's answer when backspace is pressed
+            userAnswers[currentQuestion].pop_back();
+        }
+
+        // Draw the "Next" button
+        DrawRectangle(100, 200, 100, 40, SKYBLUE);
+        DrawText("Next", 120, 210, 20, DARKBLUE);
+
+        // Check if the "Next" button is clicked
+        if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            // Proceed to the next question
+            currentQuestion++;
+        }
+
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            currentQuestion++;
+        }
+    }
+    else
+    {
+        // Draw the results
+        DrawText("Geography Results:", 100, 100, 20, DARKBLUE);
+        DrawText("Press ESC to return", 10, 40, 20, GRAY);
+
+        int points = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            // Draw each question's result
+            string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+            string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
+            if (userAnswers[i] == geo2Answers[i])
+            {
+                resultTextCorrect += "Correct";
+                points++;
+                DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
+            }
+            else
+            {
+                resultTextIncorrect += "Incorrect";
+                DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
+            }
+        }
+
+        // Draw the total points
+        DrawText("You have: ", 10, 10, 20, GRAY);
+        DrawText(to_string(points).c_str(), 140, 10, 20, GRAY);
+        DrawText(" points", 180, 10, 20, GRAY);
+
+
+        // Check if the ESC key is pressed to return to the main menu
+        if (IsKeyDown(KEY_ESCAPE))
+        {
+            currentQuestion = 0;
+            inGame = false;  // Assuming inGame is a global variable
+            currentState = GameState::SubjectSelection;  // Assuming currentState is an enum representing the game state
+        }
+    }
 }
+
+const char* geo3Questions[10] = {
+    "1.What is the capital of Mongolia?",
+    "2.What is the approximate length of the Great Wall of China?",
+    "3.In which U.S. state would you find Denali, the highest peak in North America?",
+    "4.What is the capital of Bhutan?",
+    "5.Which country has the largest number of time zones?",
+    "6.What is the name of the sea that lies between Iran and Saudi Arabia?",
+    "7.What is the only country in the world that is also an entire continent?",
+    "8.Which mountain range separates Europe from Asia?",
+    "9.What is the largest country by area in South America?",
+    "10.What is the name of the second-highest mountain in the world?",
+
+};
+
+const string geo3Answers[10] = {
+    "Ulaanbaatar",
+    "21,196 kilometers",
+    "Alaska",
+    "Thimphu",
+    "Russia",
+    "Persian Gulf",
+    "Australia",
+    "Ural Mountains",
+    "Brazil",
+    "K2",
+
+};
 
 void GeographyTestHard()
 {
+    static int currentQuestion = 0;
+    static string userAnswers[30];
 
+    ClearBackground(RAYWHITE);
+
+    if (currentQuestion < 10)
+    {
+        // Draw the question
+        DrawText(geo3Questions[currentQuestion], 100, 100, 20, DARKGRAY);
+        // Draw an input box for the user's answer
+        DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+        // Draw the user's answer inside the input box
+        DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
+
+        char key = GetCharPressed();
+        if (key >= 32 && key <= 126)
+        {
+            // Append the pressed key to the user's answer
+            userAnswers[currentQuestion] += key;
+        }
+        else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
+        {
+            // Remove the last character from the user's answer when backspace is pressed
+            userAnswers[currentQuestion].pop_back();
+        }
+
+        // Draw the "Next" button
+        DrawRectangle(100, 200, 100, 40, SKYBLUE);
+        DrawText("Next", 120, 210, 20, DARKBLUE);
+
+        // Check if the "Next" button is clicked
+        if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            // Proceed to the next question
+            currentQuestion++;
+        }
+
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            currentQuestion++;
+        }
+    }
+    else
+    {
+        // Draw the results
+        DrawText("Geography Results:", 100, 100, 20, DARKBLUE);
+        DrawText("Press ESC to return", 10, 40, 20, GRAY);
+
+        int points = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            // Draw each question's result
+            string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+            string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
+            if (userAnswers[i] == geo3Answers[i])
+            {
+                resultTextCorrect += "Correct";
+                points++;
+                DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
+            }
+            else
+            {
+                resultTextIncorrect += "Incorrect";
+                DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
+            }
+        }
+
+        // Draw the total points
+        DrawText("You have: ", 10, 10, 20, GRAY);
+        DrawText(to_string(points).c_str(), 140, 10, 20, GRAY);
+        DrawText(" points", 180, 10, 20, GRAY);
+
+
+        // Check if the ESC key is pressed to return to the main menu
+        if (IsKeyDown(KEY_ESCAPE))
+        {
+            currentQuestion = 0;
+            inGame = false;  // Assuming inGame is a global variable
+            currentState = GameState::SubjectSelection;  // Assuming currentState is an enum representing the game state
+        }
+    }
 }
     const char* mathQuestions[5] = {
     "What is 15 multiplied by 6?",
