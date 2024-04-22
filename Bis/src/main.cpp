@@ -22,7 +22,10 @@ enum class GameState {
 	MathsTestMedium,
 	MathsTestHard,
 
-	HistoryDisplay
+	HistoryDisplay,
+	HistoryTestEasy,
+	HistoryTestMedium,
+	HistoryTestHard,
 };
 
 GameState currentState = GameState::StartMenu;
@@ -921,43 +924,109 @@ void MathsTestHard()
 	}
 }
 
-const char* historyQuestions[5] = {
-	"In which year did World War II end?",
-	"Who was the first President of the United States?",
-	"Which ancient civilization built the pyramids of Giza?",
-	"What year did Christopher Columbus reach the Americas?",
-	"Who wrote 'The Communist Manifesto'?"
-};
-
-const string historyAnswers[5] = {
-	"1945",
-	"George Washington",
-	"Ancient Egyptians",
-	"1492",
-	"Karl Marx"
-};
 
 void HistoryDisplay()
 {
-	static int currentQuestion = 0;
-	static string userAnswers[] = { "", "", "", "", "" };
 
 	ClearBackground(RAYWHITE);
 
-	if (currentQuestion < 5)
+	DrawText("Choose level:", 100, 100, 40, BLACK);
+	DrawText(selectedOption == 0 ? "> Easy" : "Easy", 100, 200, 20, DARKGRAY);
+	DrawText(selectedOption == 1 ? "> Medium" : "Medium", 100, 240, 20, DARKGRAY);
+	DrawText(selectedOption == 2 ? "> Hard" : "Hard", 100, 280, 20, DARKGRAY);
+
+	if (IsKeyPressed(KEY_UP) && selectedOption > 0) {
+		selectedOption--;
+	}
+
+	if (IsKeyPressed(KEY_DOWN) && selectedOption < 2) {
+		selectedOption++;
+	}
+
+	if (IsKeyPressed(KEY_ENTER)) {
+		if (selectedOption == 0) {
+			currentState = GameState::HistoryTestEasy;
+			inGame = true;
+		}
+		else if (selectedOption == 1) {
+			currentState = GameState::HistoryTestMedium;
+			inGame = true;
+		}
+		else if (selectedOption == 2) {
+			currentState = GameState::HistoryTestHard;
+			inGame = true;
+		}
+	}
+
+	if (IsKeyDown(KEY_ESCAPE)) {
+		inGame = false;
+		currentState = GameState::SubjectSelection;
+	}
+}
+
+const char* HistoryQuestions[10] = {
+	"1.Who was the first President of the United States?",
+	"2.In what year did World War II end?",
+	"3.What ancient civilization built the Great Pyramids of Giza?",
+	"4.Who was the famous queen of ancient Egypt known for her beauty?",
+	"5.What event marked the beginning of the Renaissance in Europe?",
+	"6.Who is credited with discovering America in 1492?",
+	"7.What was the name of the ship that carried the Pilgrims to America in 1620?",
+	"8.Who was the first man to set foot on the moon?",
+	"9.Who was the leader of the Soviet Union during the Cuban Missile Crisis?",
+	"10.What year did the Berlin Wall fall, marking the end of the Cold War?",
+
+};
+
+const string HistoryAnswers[10] = {
+	"George Washington",
+	"1945",
+	"Ancient Egyptians",
+	"Cleopatra",
+	"The fall of Constantinople (1453)",
+	"Christopher Columbus",
+	"Mayflower",
+	"Neil Armstrong",
+	"Nikita Khrushchov",
+	"1989",
+
+};
+
+void HistoryTestEasy()
+{
+	static int currentQuestion = 0;
+	static string userAnswers[30];
+
+	ClearBackground(RAYWHITE);
+
+	if (currentQuestion < 10)
 	{
-		DrawText(historyQuestions[currentQuestion], 100, 100, 20, DARKGRAY);
+
+		DrawText(HistoryQuestions[currentQuestion], 100, 100, 20, DARKGRAY);
+
 		DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+
 		DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
 
 		char key = GetCharPressed();
-		if ((key >= '0' && key <= '9') || (key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z'))
+		if (key >= 32 && key <= 126)
 		{
+
 			userAnswers[currentQuestion] += key;
 		}
 		else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
 		{
+
 			userAnswers[currentQuestion].pop_back();
+		}
+
+		DrawRectangle(100, 200, 100, 40, SKYBLUE);
+		DrawText("Next", 120, 210, 20, DARKBLUE);
+
+		if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+		{
+
+			currentQuestion++;
 		}
 
 		if (IsKeyPressed(KEY_ENTER))
@@ -967,25 +1036,295 @@ void HistoryDisplay()
 	}
 	else
 	{
-		ClearBackground(RAYWHITE);
-		DrawText("History Results:", 100, 100, 20, DARKGRAY);
 
-		for (int i = 0; i < 5; i++)
+		DrawText("HIstory Results:", 100, 100, 20, DARKBLUE);
+		DrawText("Press ESC to return", 400, 40, 20, BLACK);
+
+		int points = 0;
+		for (int i = 0; i < 10; i++)
 		{
-			string resultText = "Question " + to_string(i + 1) + ": ";
-			if (userAnswers[i] == historyAnswers[i])
+
+			string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+			string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
+			if (userAnswers[i] == HistoryAnswers[i])
 			{
-				resultText += "Correct";
+				resultTextCorrect += "Correct";
+				points++;
+				DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
 			}
 			else
 			{
-				resultText += "Incorrect";
+				resultTextIncorrect += "Incorrect";
+				DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
 			}
-
-			DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
 		}
 
-		DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
+		DrawText("You have: ", 30, 30, 20, BLACK);
+		DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+		DrawText(" points", 170, 30, 20, BLACK);
+		if (points >= 9)
+			DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+		if (points == 8)
+			DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+		if (points == 7)
+			DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+		if (points == 6 or points == 5)
+			DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+		if (points < 5)
+			DrawText("Your mark is: 2", 30, 500, 20, BLACK);
+
+		if (IsKeyDown(KEY_ESCAPE))
+		{
+			currentQuestion = 0;
+			inGame = false;
+			currentState = GameState::SubjectSelection;
+		}
+	}
+}
+
+const char* History2Questions[10] = {
+	"1.Who was the first President of the United States?",
+	"2.In what year did World War II end?",
+	"3.What ancient civilization built the Great Pyramids of Giza?",
+	"4.Who was the famous queen of ancient Egypt known for her beauty?",
+	"5.What event marked the beginning of the Renaissance in Europe?",
+	"6.Who is credited with discovering America in 1492?",
+	"7.What was the name of the ship that carried the Pilgrims to America in 1620?",
+	"8.Who was the first man to set foot on the moon?",
+	"9.Who was the leader of the Soviet Union during the Cuban Missile Crisis?",
+	"10.What year did the Berlin Wall fall, marking the end of the Cold War?",
+
+};
+
+const string History2Answers[10] = {
+	"George Washington",
+	"1945",
+	"Ancient Egyptians",
+	"Cleopatra",
+	"The fall of Constantinople (1453)",
+	"Christopher Columbus",
+	"Mayflower",
+	"Neil Armstrong",
+	"Nikita Khrushchov",
+	"1989",
+
+};
+
+
+void HistoryTestMedium()
+{
+	static int currentQuestion = 0;
+	static string userAnswers[30];
+
+	ClearBackground(RAYWHITE);
+
+	if (currentQuestion < 10)
+	{
+
+		DrawText(History2Questions[currentQuestion], 100, 100, 20, DARKGRAY);
+
+		DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+
+		DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
+
+		char key = GetCharPressed();
+		if (key >= 32 && key <= 126)
+		{
+
+			userAnswers[currentQuestion] += key;
+		}
+		else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
+		{
+
+			userAnswers[currentQuestion].pop_back();
+		}
+
+		DrawRectangle(100, 200, 100, 40, SKYBLUE);
+		DrawText("Next", 120, 210, 20, DARKBLUE);
+
+		if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+		{
+
+			currentQuestion++;
+		}
+
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			currentQuestion++;
+		}
+	}
+	else
+	{
+
+		DrawText("HIstory Results:", 100, 100, 20, DARKBLUE);
+		DrawText("Press ESC to return", 400, 40, 20, BLACK);
+
+		int points = 0;
+		for (int i = 0; i < 10; i++)
+		{
+
+			string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+			string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
+			if (userAnswers[i] == History2Answers[i])
+			{
+				resultTextCorrect += "Correct";
+				points++;
+				DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
+			}
+			else
+			{
+				resultTextIncorrect += "Incorrect";
+				DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
+			}
+		}
+
+		DrawText("You have: ", 30, 30, 20, BLACK);
+		DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+		DrawText(" points", 170, 30, 20, BLACK);
+		if (points >= 9)
+			DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+		if (points == 8)
+			DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+		if (points == 7)
+			DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+		if (points == 6 or points == 5)
+			DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+		if (points < 5)
+			DrawText("Your mark is: 2", 30, 500, 20, BLACK);
+
+		if (IsKeyDown(KEY_ESCAPE))
+		{
+			currentQuestion = 0;
+			inGame = false;
+			currentState = GameState::SubjectSelection;
+		}
+	}
+}
+
+const char* History3Questions[10] = {
+	"1.Who was the first President of the United States?",
+	"2.In what year did World War II end?",
+	"3.What ancient civilization built the Great Pyramids of Giza?",
+	"4.Who was the famous queen of ancient Egypt known for her beauty?",
+	"5.What event marked the beginning of the Renaissance in Europe?",
+	"6.Who is credited with discovering America in 1492?",
+	"7.What was the name of the ship that carried the Pilgrims to America in 1620?",
+	"8.Who was the first man to set foot on the moon?",
+	"9.Who was the leader of the Soviet Union during the Cuban Missile Crisis?",
+	"10.What year did the Berlin Wall fall, marking the end of the Cold War?",
+
+};
+
+const string History3Answers[10] = {
+	"George Washington",
+	"1945",
+	"Ancient Egyptians",
+	"Cleopatra",
+	"The fall of Constantinople (1453)",
+	"Christopher Columbus",
+	"Mayflower",
+	"Neil Armstrong",
+	"Nikita Khrushchov",
+	"1989",
+
+};
+
+
+void HistoryTestHard()
+{
+	static int currentQuestion = 0;
+	static string userAnswers[30];
+
+	ClearBackground(RAYWHITE);
+
+	if (currentQuestion < 10)
+	{
+
+		DrawText(History3Questions[currentQuestion], 100, 100, 20, DARKGRAY);
+
+		DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+
+		DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
+
+		char key = GetCharPressed();
+		if (key >= 32 && key <= 126)
+		{
+
+			userAnswers[currentQuestion] += key;
+		}
+		else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
+		{
+
+			userAnswers[currentQuestion].pop_back();
+		}
+
+		DrawRectangle(100, 200, 100, 40, SKYBLUE);
+		DrawText("Next", 120, 210, 20, DARKBLUE);
+
+		if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+		{
+
+			currentQuestion++;
+		}
+
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			currentQuestion++;
+		}
+	}
+	else
+	{
+
+		DrawText("HIstory Results:", 100, 100, 20, DARKBLUE);
+		DrawText("Press ESC to return", 400, 40, 20, BLACK);
+
+		int points = 0;
+		for (int i = 0; i < 10; i++)
+		{
+
+			string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+			string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
+			if (userAnswers[i] == History3Answers[i])
+			{
+				resultTextCorrect += "Correct";
+				points++;
+				DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
+			}
+			else
+			{
+				resultTextIncorrect += "Incorrect";
+				DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
+			}
+		}
+
+		DrawText("You have: ", 30, 30, 20, BLACK);
+		DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+		DrawText(" points", 170, 30, 20, BLACK);
+		if (points >= 9)
+			DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+		if (points == 8)
+			DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+		if (points == 7)
+			DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+		if (points == 6 or points == 5)
+			DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+		if (points < 5)
+			DrawText("Your mark is: 2", 30, 500, 20, BLACK);
 
 		if (IsKeyDown(KEY_ESCAPE))
 		{
@@ -1054,6 +1393,15 @@ int main() {
 			break;
 		case GameState::HistoryDisplay:
 			HistoryDisplay();
+			break;
+		case GameState::HistoryTestEasy:
+			HistoryTestEasy();
+			break;
+		case GameState::HistoryTestMedium:
+			HistoryTestMedium();
+			break;
+		case GameState::HistoryTestHard:
+			HistoryTestHard();
 			break;
 		}
 
