@@ -18,6 +18,10 @@ enum class GameState {
 	GeographyTestHard,
 
 	MathsQuiz,
+	MathsTestEasy,
+	MathsTestMedium,
+	MathsTestHard,
+
 	HistoryDisplay
 };
 
@@ -540,43 +544,106 @@ void GeographyTestHard()
 	}
 }
 
-const char* mathQuestions[5] = {
-	"What is 15 multiplied by 6?",
-	"What is the square root of 144?",
-	"How many degrees are there in a right angle?",
-	"What is the value of pi (π) to two decimal places?",
-	"What is the sum of 87 and 45?"
-};
-
-const string mathAnswers[5] = {
-	"90",
-	"12",
-	"90",
-	"3.14",
-	"132"
-};
-
 void MathsQuiz()
 {
+	ClearBackground(RAYWHITE);
+
+	DrawText("Choose level:", 100, 100, 40, BLACK);
+	DrawText(selectedOption == 0 ? "> Easy" : "Easy", 100, 200, 20, DARKGRAY);
+	DrawText(selectedOption == 1 ? "> Medium" : "Medium", 100, 240, 20, DARKGRAY);
+	DrawText(selectedOption == 2 ? "> Hard" : "Hard", 100, 280, 20, DARKGRAY);
+
+	if (IsKeyPressed(KEY_UP) && selectedOption > 0) {
+		selectedOption--;
+	}
+
+	if (IsKeyPressed(KEY_DOWN) && selectedOption < 2) {
+		selectedOption++;
+	}
+
+	if (IsKeyPressed(KEY_ENTER)) {
+		if (selectedOption == 0) {
+			currentState = GameState::MathsTestEasy;
+			inGame = true;
+		}
+		else if (selectedOption == 1) {
+			currentState = GameState::MathsTestMedium;
+			inGame = true;
+		}
+		else if (selectedOption == 2) {
+			currentState = GameState::MathsTestHard;
+			inGame = true;
+		}
+	}
+
+	if (IsKeyDown(KEY_ESCAPE)) {
+		inGame = false;
+		currentState = GameState::SubjectSelection;
+	}
+}
+
+const char* MathsQuestions[10] = {
+	"1.What is 15 + 27?",
+	"2.What is 6 * 12?",
+	"3.What is 112 divided by 4?",
+	"4.What is the value of π (pi) to two decimal places?",
+	"5.What is the square root of 25?",
+	"6.How much is 30% of 500?",
+	"7.What is the next number in the sequence: 2, 4, 6, 8, ...?",
+	"8.What is the sum of the angles in a triangle?",
+	"9.What is the area of a square with a side length of 6 units?",
+	"10.What is the perimeter of a rectangle with dimensions 4 units by 8 units?",
+
+};
+
+const string MathsAnswers[10] = {
+	"42",
+	"72",
+	"28",
+	"3.14",
+	"5",
+	"150",
+	"10",
+	"180 degrees",
+	"36",
+	"24",
+
+};
+void MathsTestEasy()
+{
 	static int currentQuestion = 0;
-	static string userAnswers[] = { "", "", "", "", "" };
+	static string userAnswers[30];
 
 	ClearBackground(RAYWHITE);
 
-	if (currentQuestion < 5)
+	if (currentQuestion < 10)
 	{
-		DrawText(mathQuestions[currentQuestion], 100, 100, 20, DARKGRAY);
+
+		DrawText(MathsQuestions[currentQuestion], 100, 100, 20, DARKGRAY);
+
 		DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+
 		DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
 
 		char key = GetCharPressed();
-		if (key >= '0' && key <= '9' || key == '.' || key == '-')
+		if (key >= 32 && key <= 126)
 		{
+
 			userAnswers[currentQuestion] += key;
 		}
 		else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
 		{
+
 			userAnswers[currentQuestion].pop_back();
+		}
+
+		DrawRectangle(100, 200, 100, 40, SKYBLUE);
+		DrawText("Next", 120, 210, 20, DARKBLUE);
+
+		if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+		{
+
+			currentQuestion++;
 		}
 
 		if (IsKeyPressed(KEY_ENTER))
@@ -586,25 +653,293 @@ void MathsQuiz()
 	}
 	else
 	{
-		ClearBackground(RAYWHITE);
-		DrawText("Math Results:", 100, 100, 20, DARKGRAY);
 
-		for (int i = 0; i < 5; i++)
+		DrawText("Maths Results:", 100, 100, 20, DARKBLUE);
+		DrawText("Press ESC to return", 400, 40, 20, BLACK);
+
+		int points = 0;
+		for (int i = 0; i < 10; i++)
 		{
-			string resultText = "Question " + to_string(i + 1) + ": ";
-			if (userAnswers[i] == mathAnswers[i])
+
+			string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+			string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
+			if (userAnswers[i] == MathsAnswers[i])
 			{
-				resultText += "Correct";
+				resultTextCorrect += "Correct";
+				points++;
+				DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
 			}
 			else
 			{
-				resultText += "Incorrect";
+				resultTextIncorrect += "Incorrect";
+				DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
 			}
-
-			DrawText(resultText.c_str(), 100, 140 + i * 30, 20, DARKGRAY);
 		}
 
-		DrawText("Press ESC to return", 100, 340, 20, DARKGRAY);
+		DrawText("You have: ", 30, 30, 20, BLACK);
+		DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+		DrawText(" points", 170, 30, 20, BLACK);
+		if (points >= 9)
+			DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+		if (points == 8)
+			DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+		if (points == 7)
+			DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+		if (points == 6 or points == 5)
+			DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+		if (points < 5)
+			DrawText("Your mark is: 2", 30, 500, 20, BLACK);
+
+		if (IsKeyDown(KEY_ESCAPE))
+		{
+			currentQuestion = 0;
+			inGame = false;
+			currentState = GameState::SubjectSelection;
+		}
+	}
+}
+
+const char* Maths2Questions[10] = {
+	"1.Solve for x: 2x + 5 = 15. X = What",
+	"2.What is the greatest common divisor (GCD) of 24 and 36?",
+	"3.What is the volume of a cube with side length 3 units?",
+	"4.What is the slope of the line passing through the points (2, 4) and (6, 10)?",
+	"5.What is the value of 3² + 4²?",
+	"6.If a = 3 and b = 5, what is the value of a² + b²?",
+	"7.What is the product of the first 5 prime numbers?",
+	"8.Solve for x: 3x - 7 = 11. X = What",
+	"9.What is the circumference of a circle with a diameter of 10 units?",
+	"10.What is the area of a triangle with base 8 units and height 6 units?",
+
+};
+
+const string Maths2Answers[10] = {
+	"5",
+	"12",
+	"27",
+	"1",
+	"25",
+	"34",
+	"2310",
+	"6",
+	"31.42",
+	"24",
+
+};
+
+void MathsTestMedium()
+{
+	static int currentQuestion = 0;
+	static string userAnswers[30];
+
+	ClearBackground(RAYWHITE);
+
+	if (currentQuestion < 10)
+	{
+
+		DrawText(Maths2Questions[currentQuestion], 100, 100, 20, DARKGRAY);
+
+		DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+
+		DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
+
+		char key = GetCharPressed();
+		if (key >= 32 && key <= 126)
+		{
+
+			userAnswers[currentQuestion] += key;
+		}
+		else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
+		{
+
+			userAnswers[currentQuestion].pop_back();
+		}
+
+		DrawRectangle(100, 200, 100, 40, SKYBLUE);
+		DrawText("Next", 120, 210, 20, DARKBLUE);
+
+		if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+		{
+
+			currentQuestion++;
+		}
+
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			currentQuestion++;
+		}
+	}
+	else
+	{
+
+		DrawText("Maths Results:", 100, 100, 20, DARKBLUE);
+		DrawText("Press ESC to return", 400, 40, 20, BLACK);
+
+		int points = 0;
+		for (int i = 0; i < 10; i++)
+		{
+
+			string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+			string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
+			if (userAnswers[i] == Maths2Answers[i])
+			{
+				resultTextCorrect += "Correct";
+				points++;
+				DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
+			}
+			else
+			{
+				resultTextIncorrect += "Incorrect";
+				DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
+			}
+		}
+
+		DrawText("You have: ", 30, 30, 20, BLACK);
+		DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+		DrawText(" points", 170, 30, 20, BLACK);
+		if (points >= 9)
+			DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+		if (points == 8)
+			DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+		if (points == 7)
+			DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+		if (points == 6 or points == 5)
+			DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+		if (points < 5)
+			DrawText("Your mark is: 2", 30, 500, 20, BLACK);
+
+		if (IsKeyDown(KEY_ESCAPE))
+		{
+			currentQuestion = 0;
+			inGame = false;
+			currentState = GameState::SubjectSelection;
+		}
+	}
+}
+
+
+const char* Maths3Questions[10] = {
+	"1.What is the value of 2⁴ ÷ (3 × 2²) + 5?",
+	"2.What is the decimal representation of the fraction 3/7 to three decimal places?",
+	"3.Solve for x: log₄(x) = 2. X = What",
+	"4.What is the value of the expression (2 + √3)² - (2 - √3)²?",
+	"5.How many degrees are in the interior angles of a hexagon?",
+	"6.What is the value of the expression (sin 30°) / (cos 30°)?",
+	"7.Solve for x: 2x³ - 5x² + 3x - 7 = 0. X = What",
+	"8.What is the sum of the first 10 terms of the arithmetic sequence: 3, 7, 11, 15, ...?",
+	"9.What is the value of i², where i is the imaginary unit (√(-1))?",
+	"10.What is the value of the expression √(16 + 9) - √(16 - 9)?",
+
+};
+
+const string Maths3Answers[10] = {
+	"3",
+	"0.429",
+	"16",
+	"8",
+	"720",
+	"1",
+	"2",
+	"280",
+	"-1",
+	"5",
+
+};
+void MathsTestHard()
+{
+	static int currentQuestion = 0;
+	static string userAnswers[30];
+
+	ClearBackground(RAYWHITE);
+
+	if (currentQuestion < 10)
+	{
+
+		DrawText(Maths3Questions[currentQuestion], 100, 100, 20, DARKGRAY);
+
+		DrawRectangle(100, 130, 200, 30, LIGHTGRAY);
+
+		DrawText(userAnswers[currentQuestion].c_str(), 110, 135, 20, MAROON);
+
+		char key = GetCharPressed();
+		if (key >= 32 && key <= 126)
+		{
+
+			userAnswers[currentQuestion] += key;
+		}
+		else if (IsKeyPressed(KEY_BACKSPACE) && !userAnswers[currentQuestion].empty())
+		{
+
+			userAnswers[currentQuestion].pop_back();
+		}
+
+		DrawRectangle(100, 200, 100, 40, SKYBLUE);
+		DrawText("Next", 120, 210, 20, DARKBLUE);
+
+		if (CheckCollisionPointRec(GetMousePosition(), { 100, 200, 100, 40 }) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+		{
+
+			currentQuestion++;
+		}
+
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			currentQuestion++;
+		}
+	}
+	else
+	{
+
+		DrawText("Maths Results:", 100, 100, 20, DARKBLUE);
+		DrawText("Press ESC to return", 400, 40, 20, BLACK);
+
+		int points = 0;
+		for (int i = 0; i < 10; i++)
+		{
+
+			string resultTextCorrect = "Question " + to_string(i + 1) + ": ";
+			string resultTextIncorrect = "Question " + to_string(i + 1) + ": ";
+
+			if (userAnswers[i] == Maths3Answers[i])
+			{
+				resultTextCorrect += "Correct";
+				points++;
+				DrawText(resultTextCorrect.c_str(), 100, 140 + i * 30, 20, GREEN);
+			}
+			else
+			{
+				resultTextIncorrect += "Incorrect";
+				DrawText(resultTextIncorrect.c_str(), 100, 140 + i * 30, 20, RED);
+			}
+		}
+
+		DrawText("You have: ", 30, 30, 20, BLACK);
+		DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+		DrawText(" points", 170, 30, 20, BLACK);
+		if (points >= 9)
+			DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+		if (points == 8)
+			DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+		if (points == 7)
+			DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+		if (points == 6 or points == 5)
+			DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+		if (points < 5)
+			DrawText("Your mark is: 2", 30, 500, 20, BLACK);
 
 		if (IsKeyDown(KEY_ESCAPE))
 		{
@@ -631,7 +966,7 @@ const string historyAnswers[5] = {
 	"Karl Marx"
 };
 
-void HistoryQuiz()
+void HistoryDisplay()
 {
 	static int currentQuestion = 0;
 	static string userAnswers[] = { "", "", "", "", "" };
@@ -737,8 +1072,17 @@ int main() {
 		case GameState::MathsQuiz:
 			MathsQuiz();
 			break;
+		case GameState::MathsTestEasy:
+			MathsTestEasy();
+			break;
+		case GameState::MathsTestMedium:
+			MathsTestMedium();
+			break;
+		case GameState::MathsTestHard:
+			MathsTestHard();
+			break;
 		case GameState::HistoryDisplay:
-			HistoryQuiz();
+			HistoryDisplay();
 			break;
 		}
 
