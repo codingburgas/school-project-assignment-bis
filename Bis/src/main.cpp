@@ -1088,30 +1088,30 @@ void HistoryTestEasy()
 }
 
 const char* History2Questions[10] = {
-	"1.Who was the first President of the United States?",
-	"2.In what year did World War II end?",
-	"3.What ancient civilization built the Great Pyramids of Giza?",
-	"4.Who was the famous queen of ancient Egypt known for her beauty?",
-	"5.What event marked the beginning of the Renaissance in Europe?",
-	"6.Who is credited with discovering America in 1492?",
-	"7.What was the name of the ship that carried the Pilgrims to America in 1620?",
-	"8.Who was the first man to set foot on the moon?",
-	"9.Who was the leader of the Soviet Union during the Cuban Missile Crisis?",
-	"10.What year did the Berlin Wall fall, marking the end of the Cold War?",
+	"1.Who is the first permanent English settlement in North America?",
+	"2.Who was the longest-reigning monarch in British history?",
+	"3.What was the significance of the Battle of Waterloo in 1815?",
+	"4.Who was the founder of the Mongol Empire in the 13th century?",
+	"5.What was the Treaty of Versailles, and what were its consequences?",
+	"6.Who was the first female Prime Minister of the United Kingdom?",
+	"7.What was the ancient trade route that connected Europe to China?",
+	"8.What event sparked World War I?",
+	"9.Who was the Roman general responsible for the conquest of Gaul?",
+	"10.What was the significance of the Louisiana Purchase in 1803?",
 
 };
 
 const string History2Answers[10] = {
-	"George Washington",
-	"1945",
-	"Ancient Egyptians",
-	"Cleopatra",
-	"The fall of Constantinople (1453)",
-	"Christopher Columbus",
-	"Mayflower",
-	"Neil Armstrong",
-	"Nikita Khrushchov",
-	"1989",
+	"Jamestown",
+	"Queen Victoria",
+	"The final defeat of Napoleon Bonaparte",
+	"Genghis Khan",
+	"It ended World War I and imposed harsh penalties on Germany, leading to economic instability and contributing to the rise of Nazi Germany",
+	"Margaret Thatcher",
+	"Silk Road",
+	"The assassination of Archduke Franz Ferdinand of Austria-Hungary",
+	"Julius Caesar",
+	"It doubled the size of the United States and opened up vast western territories for expansion",
 
 };
 
@@ -1212,30 +1212,30 @@ void HistoryTestMedium()
 }
 
 const char* History3Questions[10] = {
-	"1.Who was the first President of the United States?",
-	"2.In what year did World War II end?",
-	"3.What ancient civilization built the Great Pyramids of Giza?",
-	"4.Who was the famous queen of ancient Egypt known for her beauty?",
-	"5.What event marked the beginning of the Renaissance in Europe?",
-	"6.Who is credited with discovering America in 1492?",
-	"7.What was the name of the ship that carried the Pilgrims to America in 1620?",
-	"8.Who was the first man to set foot on the moon?",
-	"9.Who was the leader of the Soviet Union during the Cuban Missile Crisis?",
-	"10.What year did the Berlin Wall fall, marking the end of the Cold War?",
+	"1.What was the primary cause of the Peloponnesian War?",
+	"2.Who was the architect of the Terror during the French Revolution?",
+	"3.What event triggered the beginning of World War I?",
+	"4.Who was the last emperor of Russia before the Bolshevik Revolution?",
+	"5.What was the significance of the Battle of Stalingrad during World War II?",
+	"6.Who was the first female ruler of Russia?",
+	"7.What was the main cause of the Irish Potato Famine in the 19th century?",
+	"8.Who wrote 'The Communist Manifesto' with Karl Marx?",
+	"9.What was the name of the treaty that ended the Korean War in 1953?",
+	"10.Who was the primary architect of the unification of Italy?",
 
 };
 
 const string History3Answers[10] = {
-	"George Washington",
-	"1945",
-	"Ancient Egyptians",
-	"Cleopatra",
-	"The fall of Constantinople (1453)",
-	"Christopher Columbus",
-	"Mayflower",
-	"Neil Armstrong",
-	"Nikita Khrushchov",
-	"1989",
+	"Athenian imperialism",
+	"Maximilien Robespierre",
+	"Assassination of Archduke Franz Ferdinand",
+	"Nicholas II",
+	"Turning point, Soviet victory",
+	"Catherine the Great",
+	"Potato blight",
+	"Friedrich Engels",
+	"Armistice Agreement",
+	"Giuseppe Garibaldi",
 
 };
 
