@@ -149,13 +149,13 @@ const char* geoQuestions[30] = {
 	"1.What is the capital of France?",
 	"2.What is the largest desert in the world?",
 	"3.Where is the Great Barrier Reef located?",
-	"4.Which country is famous for the Amazon Rainforest?",
+	"4.Where is the Amazon Rainforest?",
 	"5.What is the tallest mountain in the world?",
 	"6.What is the capital of Japan?",
 	"7.Where is the Amazon River located?",
 	"8.Which continent is the Sahara Desert in?",
 	"9.What is the longest river in the world?",
-	"10.In which country would you find the Serengeti National Park?",
+	"10.Where is Serengeti National Park?",
 
 };
 
@@ -270,10 +270,10 @@ void GeographyTestEasy()
 
 const char* geo2Questions[10] = {
 	"1.What is the southernmost continent?",
-	"2.Which European country is known for its windmills, tulips, and canals?",
+	"2.Which country is known for its windmills, tulips, and canals?",
 	"3.What is the name of the strait that separates Europe from Africa?",
 	"4.Which two countries share the longest international border?",
-	"5.What is the highest waterfall in the world, and in which country is it located?",
+	"5.Where is the highest waterfall in the world?",
 	"6.Which African country is famous for its Maasai Mara National Reserve?",
 	"7.What is the name of the world's largest coral reef system?",
 	"8.What is the capital of Canada?",
@@ -394,7 +394,7 @@ void GeographyTestMedium()
 const char* geo3Questions[10] = {
 	"1.What is the capital of Mongolia?",
 	"2.What is the approximate length of the Great Wall of China?",
-	"3.In which U.S. state would you find Denali, the highest peak in North America?",
+	"3.In which U.S. state is the highest peak in North America?",
 	"4.What is the capital of Bhutan?",
 	"5.Which country has the largest number of time zones?",
 	"6.What is the name of the sea that lies between Iran and Saudi Arabia?",
@@ -676,14 +676,14 @@ void MathsTestEasy()
 }
 
 const char* Maths2Questions[10] = {
-	"1.Solve for x: 2x + 5 = 15. X = What",
+	"1.Solve for x: 2x + 5 = 15.",
 	"2.What is the greatest common divisor (GCD) of 24 and 36?",
 	"3.What is the volume of a cube with side length 3 units?",
 	"4.What is the slope of the line passing through the points (2, 4) and (6, 10)?",
-	"5.What is the value of 3² + 4²?",
-	"6.If a = 3 and b = 5, what is the value of a² + b²?",
+	"5.What is the value of 3 on square + 4 on square?",
+	"6.If a = 3 and b = 5, what is the value of a on square + b on square?",
 	"7.What is the product of the first 5 prime numbers?",
-	"8.Solve for x: 3x - 7 = 11. X = What",
+	"8.Solve for x: 3x - 7 = 11.",
 	"9.What is the circumference of a circle with a diameter of 10 units?",
 	"10.What is the area of a triangle with base 8 units and height 6 units?",
 
@@ -800,16 +800,16 @@ void MathsTestMedium()
 
 
 const char* Maths3Questions[10] = {
-	"1.What is the value of 2⁴ ÷ (3 × 2²) + 5?",
-	"2.What is the decimal representation of the fraction 3/7 to three decimal places?",
-	"3.Solve for x: log₄(x) = 2. X = What",
-	"4.What is the value of the expression (2 + √3)² - (2 - √3)²?",
+	"1.What is the value of 2 on fourth square ÷ (3 × 4) + 5?",
+	"2.What is the decimal of the fraction 3/7 to three decimal places?",
+	"3.Solve for x: log₄(x) = 2.",
+	"4.What is (2 + root(3))on square - (2 - √3)on square?",
 	"5.How many degrees are in the interior angles of a hexagon?",
-	"6.What is the value of the expression (sin 30°) / (cos 30°)?",
-	"7.Solve for x: 2x³ - 5x² + 3x - 7 = 0. X = What",
-	"8.What is the sum of the first 10 terms of the arithmetic sequence: 3, 7, 11, 15, ...?",
-	"9.What is the value of i², where i is the imaginary unit (√(-1))?",
-	"10.What is the value of the expression √(16 + 9) - √(16 - 9)?",
+	"6.What is the value of the expression (sin 30) / (cos 30)?",
+	"7.Solve for x: 2x3 - 5x2 + 3x - 7 = 0.",
+	"8.The sum of the first 10 numbers here: 3, 7, 11, 15, ...? are?",
+	"9.What is the value of i on square, where i is the imaginary unit (root(-1))?",
+	"10.What is the value of the expression root(16 + 9) - root(16 - 9)?",
 
 };
 
