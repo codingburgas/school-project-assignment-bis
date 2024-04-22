@@ -27,7 +27,7 @@ static int longText1 = 0;
 bool exitWindow = false;
 int selectedOption = 0;
 bool inGame = false;
-bool musicStarted = false;  // Track if music has started
+bool musicStarted = false;
 
 void Settings() {
     const int screenWidth = 800;
@@ -69,7 +69,7 @@ void Settings() {
 void StartMenu() {
     ClearBackground(RAYWHITE);
 
-    DrawText("School Test Program", 100, 100, 40, GRAY);
+    DrawText("School Test Program", 100, 100, 40, BLACK);
     DrawText(selectedOption == 0 ? "> Start" : "Start", 100, 200, 20, DARKGRAY);
     DrawText(selectedOption == 1 ? "> Settings" : "Settings", 100, 240, 20, DARKGRAY);
     DrawText(selectedOption == 2 ? "> Exit" : "Exit", 100, 280, 20, DARKGRAY);
@@ -98,7 +98,7 @@ void StartMenu() {
 void SubjectSelection() {
     ClearBackground(RAYWHITE);
 
-    DrawText("Choose subject:", 100, 100, 40, GRAY);
+    DrawText("Choose subject:", 100, 100, 40, BLACK);
     DrawText(selectedOption == 0 ? "> Geography" : "Geography", 100, 200, 20, DARKGRAY);
     DrawText(selectedOption == 1 ? "> Maths" : "Maths", 100, 240, 20, DARKGRAY);
     DrawText(selectedOption == 2 ? "> History" : "History", 100, 280, 20, DARKGRAY);
@@ -131,11 +131,12 @@ void SubjectSelection() {
         currentState = GameState::StartMenu;
     }
 }
+
 void GeographyQuiz()
 {
     ClearBackground(RAYWHITE);
 
-    DrawText("Choose level:", 100, 100, 40, GRAY);
+    DrawText("Choose level:", 100, 100, 40, BLACK);
     DrawText(selectedOption == 0 ? "> Easy" : "Easy", 100, 200, 20, DARKGRAY);
     DrawText(selectedOption == 1 ? "> Medium" : "Medium", 100, 240, 20, DARKGRAY);
     DrawText(selectedOption == 2 ? "> Hard" : "Hard", 100, 280, 20, DARKGRAY);
@@ -168,8 +169,6 @@ void GeographyQuiz()
         currentState = GameState::SubjectSelection;
     }
 }
-
-
 
 const char* geoQuestions[30] = {
     "1.What is the capital of France?",
@@ -247,7 +246,7 @@ void GeographyTestEasy()
     {
         // Draw the results
         DrawText("Geography Results:", 100, 100, 20, DARKBLUE);
-        DrawText("Press ESC to return", 10, 40, 20, GRAY);
+        DrawText("Press ESC to return", 400, 40, 20, BLACK);
 
         int points = 0;
         for (int i = 0; i < 10; i++)
@@ -270,9 +269,23 @@ void GeographyTestEasy()
         }
 
         // Draw the total points
-        DrawText("You have: ", 10, 10, 20, GRAY);
-        DrawText(to_string(points).c_str(), 140, 10, 20, GRAY);
-        DrawText(" points", 180, 10, 20, GRAY);
+        DrawText("You have: ", 30, 30, 20, BLACK);
+        DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+        DrawText(" points", 170, 30, 20, BLACK);
+        if (points >= 9)
+            DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+        if (points == 8)
+            DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+        if (points == 7)
+            DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+        if (points == 6 or points == 5)
+            DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+        if (points < 5)
+            DrawText("Your mark is: 2", 30, 500, 20, BLACK);
 
 
         // Check if the ESC key is pressed to return to the main menu
@@ -284,6 +297,7 @@ void GeographyTestEasy()
         }
     }
 }
+
 const char* geo2Questions[10] = {
     "1.What is the southernmost continent?",
     "2.Which European country is known for its windmills, tulips, and canals?",
@@ -311,6 +325,7 @@ const string geo2Answers[10] = {
     "Silicy",
 
 };
+
 void GeographyTestMedium()
 {
     static int currentQuestion = 0;
@@ -359,7 +374,7 @@ void GeographyTestMedium()
     {
         // Draw the results
         DrawText("Geography Results:", 100, 100, 20, DARKBLUE);
-        DrawText("Press ESC to return", 10, 40, 20, GRAY);
+        DrawText("Press ESC to return", 400, 40, 20, BLACK);
 
         int points = 0;
         for (int i = 0; i < 10; i++)
@@ -382,9 +397,23 @@ void GeographyTestMedium()
         }
 
         // Draw the total points
-        DrawText("You have: ", 10, 10, 20, GRAY);
-        DrawText(to_string(points).c_str(), 140, 10, 20, GRAY);
-        DrawText(" points", 180, 10, 20, GRAY);
+        DrawText("You have: ", 30, 30, 20, BLACK);
+        DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+        DrawText(" points", 170, 30, 20, BLACK);
+        if (points >= 9)
+            DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+        if (points == 8)
+            DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+        if (points == 7)
+            DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+        if (points == 6 or points == 5)
+            DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+        if (points < 5)
+            DrawText("Your mark is: 2", 30, 500, 20, BLACK);
 
 
         // Check if the ESC key is pressed to return to the main menu
@@ -473,7 +502,7 @@ void GeographyTestHard()
     {
         // Draw the results
         DrawText("Geography Results:", 100, 100, 20, DARKBLUE);
-        DrawText("Press ESC to return", 10, 40, 20, GRAY);
+        DrawText("Press ESC to return", 400, 40, 20, BLACK);
 
         int points = 0;
         for (int i = 0; i < 10; i++)
@@ -496,10 +525,24 @@ void GeographyTestHard()
         }
 
         // Draw the total points
-        DrawText("You have: ", 10, 10, 20, GRAY);
-        DrawText(to_string(points).c_str(), 140, 10, 20, GRAY);
-        DrawText(" points", 180, 10, 20, GRAY);
+        DrawText("You have: ", 30, 30, 20, BLACK);
+        DrawText(to_string(points).c_str(), 140, 30, 20, BLACK);
+        DrawText(" points", 170, 30, 20, BLACK);
 
+        if (points >= 9)
+            DrawText("Your mark is: 6", 30, 500, 20, BLACK);
+
+        if (points == 8)
+            DrawText("Your mark is: 5", 30, 500, 20, BLACK);
+
+        if (points == 7)
+            DrawText("Your mark is: 4", 30, 500, 20, BLACK);
+
+        if (points == 6 or points == 5)
+            DrawText("Your mark is: 3", 30, 500, 20, BLACK);
+
+        if (points < 5)
+            DrawText("Your mark is: 2", 30, 500, 20, BLACK);
 
         // Check if the ESC key is pressed to return to the main menu
         if (IsKeyDown(KEY_ESCAPE))
@@ -510,7 +553,8 @@ void GeographyTestHard()
         }
     }
 }
-    const char* mathQuestions[5] = {
+
+const char* mathQuestions[5] = {
     "What is 15 multiplied by 6?",
     "What is the square root of 144?",
     "How many degrees are there in a right angle?",
@@ -525,8 +569,6 @@ const string mathAnswers[5] = {
     "3.14",
     "132"
 };
-
-
 
 void MathsQuiz()
 {
@@ -587,7 +629,6 @@ void MathsQuiz()
         }
     }
 }
-
 
 const char* historyQuestions[5] = {
     "In which year did World War II end?",
@@ -665,7 +706,7 @@ void HistoryQuiz()
 }
 
 int main() {
-    InitWindow(800, 450, "School Test Program");
+    InitWindow(900, 550, "School Test Program");
 
     InitAudioDevice();
 
@@ -680,11 +721,10 @@ int main() {
             musicStarted = true;
         }
 
-
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        DrawTexture(texture, 800 / 2 - texture.width / 2, 450 / 2 - texture.height / 2, WHITE);
+        DrawTexture(texture, 900 / 2 - texture.width / 2, 550 / 2 - texture.height / 2, WHITE);
 
         switch (currentState)
         {
