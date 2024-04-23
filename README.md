@@ -5,7 +5,10 @@
 
 - [Presentation](https://codingburgas-my.sharepoint.com/:p:/g/personal/agharakchiyski22_codingburgas_bg/EQu0L9BReXtJiv8IsYQj7DcBo3brR_KtbvYhh6h6En1bnA?e=uv4EZE)
 - [Documentation](https://codingburgas-my.sharepoint.com/:w:/g/personal/agharakchiyski22_codingburgas_bg/EeuKlhjIvZVNu32FVgYsZSEBMRvYSygloqcdl5PX2kLo7Q?e=SmcTyP)
+- [QA](https://codingburgas-my.sharepoint.com/:x:/g/personal/agharakchiyski22_codingburgas_bg/EUeW-pG1nDlKr_D6T7-49pcBn-4lBRZaVLYDPgLyVavw8w?e=LYy87k)
 ## 📋 Description
+
+Welcome to our Game - an innovative educational game designed to turn learning into an exciting adventure! In this virtual school experience, students embark on a thrilling journey through various subjects, putting their skills to the test in a fun and engaging way.
 
 ## 🚀 Technologies Used
 
